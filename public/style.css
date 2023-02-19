@@ -1,14 +1,16 @@
-.body{
+.body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
 }
-.titulo{
+
+.titulo {
     color: darkblue;
 }
-.form{
+
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,75 +22,87 @@
     padding: 15px;
     margin: 10px 0;
 }
-.input{
+
+.input {
     text-align: center;
     background-color: azure;
     border: 1px solid lightgray;
 }
 
-.btn{
+.btn {
     background-color: lightblue;
     padding: 5px;
     width: fit-content;
     border-radius: 5px;
     border: none;
-    transition: 0.25s ease-in-out;
+    transition: 0.3s ease-in-out;
 }
 
-.btn:hover{
-    transition: all 0.25s ease-in-out;
+.btn:hover {
+    transition: all 0.3s ease-in-out;
     background-color: orange;
 }
 
-.table{
+.table {
     width: fit-content;
 }
-.tr1{
-    background-color:cadetblue;
+
+.tr1 {
+    background-color: cadetblue;
 }
-.tr2{
-    background-color:lightskyblue;
-    transition: all 0.5s, ease-in-out;
+
+.tr2 {
+    background-color: lightskyblue;
+    transition: all 0.3s ease-in-out;
 }
-.th1{
+
+.th1 {
     border-radius: 5px;
     width: 250px;
 }
-.th2{
+
+.th2 {
     border-radius: 5px;
     width: 75px;
 }
-.th3{
+
+.th3 {
     border-radius: 5px;
     width: 150px;
 }
-.td1{
+
+.td1 {
     border-radius: 5px;
     width: 250px;
     text-align: center;
 }
-.td2{
+
+.td2 {
     border-radius: 5px;
     width: 75px;
     text-align: center;
 }
-.td3{
+
+.td3 {
     border-radius: 5px;
     width: 150px;
     text-align: center;
 }
-.tr2:hover{
-    transition: all 0.5s, ease-in-out;
-    background-color:orange;
+
+.tr2:hover {
+    transition: all 0.3s ease-in-out;
+    background-color: orange;
 }
-.img{
+
+.img {
     width: 50px;
 }
-.inputs{
+
+.inputs {
     margin: 10px 0
 }
 
-.chat-container{
+.chat-container {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -102,7 +116,7 @@
 
 /* parametros específicos para la las tarjetas de mensajería. */
 
-.messages-container{
+.messages-container {
     display: flex;
     border: 1px solid darkgray;
     flex-direction: column;
@@ -110,7 +124,7 @@
     border-radius: 5px;
 }
 
-.mensajes{
+.mensajes {
     display: flex;
     flex-direction: column;
     width: 600px;
@@ -120,7 +134,7 @@
     background-color: white;
 }
 
-.message-cont{
+.message-cont {
     display: flex;
     flex-direction: column;
     width: auto;
@@ -130,30 +144,30 @@
     border-radius: 7px;
 }
 
-.messenger{
+.messenger {
     display: flex;
     flex-direction: row;
 }
 
-.avatar-img{
+.avatar-img {
     width: 100px;
     border-radius: 10px;
 }
 
-.avatar-container{
+.avatar-container {
     width: 100px;
     border: 1px solid black;
     border-radius: 10px;
 }
 
-.messenger-card{
+.messenger-card {
     display: flex;
     flex-direction: column;
     padding: 3px;
     justify-content: center;
 }
 
-.mensaje{
+.mensaje {
     border: 1px solid gray;
     margin: 3px;
     border-radius: 5px;
@@ -168,11 +182,11 @@
     border-radius: 7px;
 }
 
-.login-title{
+.login-title {
     color: darkblue;
 }
 
-.bienvenida-container{
+.bienvenida-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -183,26 +197,26 @@
     border-radius: 7px;
 }
 
-.bienvenida{
+.bienvenida {
     color: darkgreen;
 }
 
-.unlog-btn{
+.unlog-btn {
     height: 50px;
     color: black;
     font-weight: bolder;
-    background-color:lightskyblue;
+    background-color: lightskyblue;
     border: none;
     border-radius: 7px;
-    transition: all 0.5s, ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
-.unlog-btn:hover{
-    transition: all 0.5s, ease-in-out;
+.unlog-btn:hover {
+    transition: all 0.3s ease-in-out;
     background-color: orange;
 }
 
-.despedida-container{
+.despedida-container {
     display: flex;
     justify-content: center;
     background-color: lightskyblue;
@@ -210,7 +224,7 @@
     border-radius: 7px;
 }
 
-.despedida{
+.despedida {
     color: darkblue;
 }
 
@@ -219,4 +233,38 @@
     background-color: tomato;
     padding: 10px;
     border-radius: 7px;
+}
+
+.info {
+    width: 400px;
+    margin: 5px;
+    padding: 5px;
+    background-color: lightblue;
+    border-radius: 7px;
+    transition: 0.3s ease-in-out all;
+}
+
+.info:hover {
+    transition: 0.3s ease-in-out all;
+    background-color: orange;
+}
+
+.numbers {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.singular-number {
+    background-color: lightblue;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 3px;
+    transition: 0.3s ease-in-out all;
+}
+
+.singular-number:hover {
+    transition: 0.3s ease-in-out all;
+    background-color: orange;
 }

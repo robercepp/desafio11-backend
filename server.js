@@ -11,6 +11,7 @@ const { Server: IOServer } = require('socket.io')
 const { engine } = require('express-handlebars');
 const passport = require('passport')
 const flash = require('express-flash')
+const yargs = require('yargs/yargs')(process.argv.slice(2))
 
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
@@ -34,11 +35,11 @@ app.set("view engine", "hbs");
 app.set("views", "./views")
 app.use(express.static('public'))
 app.use(cookieParser())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }));
 app.use(flash())
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://robercepp:robercepp@cluster1.awwy7x0.mongodb.net/?retryWrites=true&w=majority',
+        mongoUrl: process.env.MONGOURL,
         mongoOptions: advancedOptions
     }),
     secret: process.env.SESSION_SECRET,
@@ -52,13 +53,23 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+//Uso de Yargs para determinar el puerto del servidor
+const { PORT } = yargs
+    .alias({
+        p: 'PORT'
+    })
+    .default({
+        PORT: 8080
+    })
+    .argv
+
+
 //servidor
-const PORT = 8080
 const connectServer = httpServer.listen(PORT, () => console.log(`Servidor http con WebSocket escuchando el puerto ${connectServer.address().port}`))
 connectServer.on("error", error => console.log(`Error en servidor ${error}`))
 
 //conexion a mongoDb
-const { mongoUrl } = require('./config/connections.js')
+const mongoUrl = process.env.MONGOURL
 
 //class
 const userHandler = require('./classes/userHandler.js')
@@ -76,6 +87,7 @@ io.on('connection', async (socket) => {
     socket.emit('productos', await prod.getAll())
     socket.emit('producto', await prod.getAll())
     socket.emit('productos-random', await prod.randomProducts())
+    socket.emit('info', getInfo())
     //Escucho los mensajes enviados por el cliente
     socket.on('new-message', async (data) => {
         await chat.saveChat(data)
@@ -144,6 +156,16 @@ app.get('/exit', auth, (req, res) => {
     })
 })
 
+app.get('/info', (req, res) => {
+    res.render('info', { titulo: 'Info del Proceso' })
+})
+
+const routes = require ('./routers/rutas.js')
+
+app.use('/api/randoms', routes)
+
+
+
 function auth(req, res, next) {
     if (req.isAuthenticated()) {
         return next()
@@ -158,4 +180,18 @@ function notAuth(req, res, next) {
         return res.redirect('/')
     }
     return next()
+}
+
+function getInfo() {
+    const args = process.argv.slice(2)
+    const plat = process.platform
+    const version = process.version
+    const memoria = process.memoryUsage().rss
+    const exe = __dirname
+    const path = process.cwd()
+    const id = process.pid
+    const info = {
+        args, plat, version, memoria, exe, id, path
+    }
+    return info
 }

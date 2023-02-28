@@ -7,6 +7,7 @@ const memoria = document.getElementById('memoria')
 const exe = document.getElementById('exe')
 const id = document.getElementById('id')
 const path = document.getElementById('path')
+const processors = document.getElementById('processors')
 
 // Escucho los mensajes enviados por el servidor
 socket.on('info', data => {
@@ -17,6 +18,7 @@ socket.on('info', data => {
     exe.innerHTML = `Path de ejecución: <br> ${data.exe}`
     id.innerHTML = `Id del proceso: <br> ${data.id}`
     path.innerHTML = `Carpeta del proyecto: <br> ${data.path}`
+    processors.innerHTML = `Cantidad de procesadores del sistema: ${data.numCPUs}`
 })
 
 

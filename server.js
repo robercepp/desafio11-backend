@@ -12,6 +12,8 @@ const { engine } = require('express-handlebars');
 const passport = require('passport')
 const flash = require('express-flash')
 const yargs = require('yargs/yargs')(process.argv.slice(2))
+const cluster = require ('cluster')
+const numCPUs = require ('os').cpus().length
 
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
@@ -54,19 +56,41 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //Uso de Yargs para determinar el puerto del servidor
-const { PORT } = yargs
+const { PORT, mode } = yargs
     .alias({
-        p: 'PORT'
+        p: 'PORT',
+        m: 'mode'
+
     })
     .default({
-        PORT: 8080
+        PORT: 8080,
+        mode: 'FORK'
     })
     .argv
 
+if(mode == "CLUSTER") {
+    if(cluster.isMaster) {
+        for(let i = 0; i < numCPUs; i++) {
+            cluster.fork()
+        }
+        console.log(`Proceso Maestro: ${process.pid}`)
+        cluster.on('exit', (worker, code, signal) => {
+            console.log(`el worker ${worker.process.pid} se ha cerrado`)
+        })
+    } else {
+        iniciarServidor()
+    }
+} else {
+    iniciarServidor()
+}
+
 
 //servidor
-const connectServer = httpServer.listen(PORT, () => console.log(`Servidor http con WebSocket escuchando el puerto ${connectServer.address().port}`))
-connectServer.on("error", error => console.log(`Error en servidor ${error}`))
+function iniciarServidor() {
+    const connectServer = httpServer.listen(PORT, () => console.log(`Servidor Express con WebSocket iniciado en modo ${mode} escuchando el puerto ${connectServer.address().port} - Proceso N° ${process.pid}`))
+    connectServer.on("error", error => console.log(`Error en servidor ${error}`))
+}
+
 
 //conexion a mongoDb
 const mongoUrl = process.env.MONGOURL
@@ -191,7 +215,7 @@ function getInfo() {
     const path = process.cwd()
     const id = process.pid
     const info = {
-        args, plat, version, memoria, exe, id, path
+        args, plat, version, memoria, exe, id, path, numCPUs
     }
     return info
 }

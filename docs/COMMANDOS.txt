@@ -1,0 +1,16 @@
+-nodemon modo fork: nodemon server.js -p 8081 -m FORK
+-nodemon modo cluster: nodemon server.js -p 8081 -m CLUSTER
+
+-forever modo fork: forever server.js -p 8081 -m FORK
+-forever modo cluster: forever server.js -p 8081 -m CLUSTER
+
+(ejecutar pm2 en gitbash para que tome los argumentos correctamente)
+-pm2 modo fork: pm2 start server.js --name="ServerRobert" --watch -- --p 8081
+-pm2 modo cluster: pm2 start server.js --name="ServerRobert2" --watch -i max -- --p 8082
+
+
+ejecución de servidor modo cluster en 4 instancias con 4 puertos distintos (ver rubricas de entrega)
+pm2 start server.js --name="ServerRobert2" --watch -i max -- --p 8082
+pm2 start server.js --name="ServerRobert2" --watch -i max -- --p 8083
+pm2 start server.js --name="ServerRobert2" --watch -i max -- --p 8084
+pm2 start server.js --name="ServerRobert2" --watch -i max -- --p 8085

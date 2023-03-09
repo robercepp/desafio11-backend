@@ -43,10 +43,15 @@ Para iniciar en modo "cluster":
 nota: si no se especifica nada, los parametros por defecto son de modo fork en puerto 8080
 
 véase imagen 1:
+![imagen1](https://raw.githubusercontent.com/robercepp/desafios-Backend/main/docs/consignas/consigna1a.jpg)
+
+en la siguiente imágen se puede apreciar el servidor corriendo en modo fork y modo cluster en diferentes terminales.
+![imagen1b](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna1c.jpg)
 
 - Se agrega una ventana de "info" con el número de procesadores del sistema en la dirección (http://localhost:8081/info) (cambiar puerto según el caso)
 
 véase imagen 2:
+![imagen2](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna1b.jpg)
 
 - Este servidor tambíen posee capacidades para ser iniciado en instancias de "Forever" que veremos a continuación. 
 
@@ -56,7 +61,8 @@ Para iniciar con forever
 nota: no olvidar de cerrar forever al terminar de usar el servidor con: 
 ```forever stopall```
 
-véase imagen 3 para su demostración: 
+véase imagen 3 para su demostración:
+![imagen3](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna1d.jpg)
 
 - se listan los procesos de forever para verificar su correcta aplicación: 
 
@@ -72,8 +78,6 @@ en otra terminal ejecutar
 
 nota: esto permite ver las aplicaciones que se encuentran actualmente ejecutandose en dicho puerto. para este ejemplo es el 8080
 
-véase imagen 4
-
 - Ejecutar el servidor (con los parámetros adecuados: modo FORK) utilizando PM2 en sus modos FORK Y CLUSTER. Listar los procesos por PM2 y por sistema operativo
 
 Modo fork: 
@@ -84,14 +88,16 @@ Modo cluster:
 ```pm2 start server.js --name="ServerRobertCluster" --watch -i max -- --p 8082```
 nota: idem modo fork.
 
-véase imagen 5
+véase imagen 4:
+![imagen4](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna%201e.jpg)
 
 - Consigna 2:
 
 Se configura Nginx para balancear cargas del servidor.
 Se redirigen las consultas a /api/randoms a un cluster de servidores escuchando en el puerto 8081. (cluster creado desde nodemon usando el móludo nativo)
 
-véase imagen 6 del archivo de configuración (también disponible en la carpeta "docs")
+véase imagen 5 del archivo de configuración (también disponible en la carpeta "docs")
+![imagen5](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna2a.jpg)
 
 Luego se modifica la configuración para que todas las consultas a /api/randoms sean redirigidas a un cluster de servidores gestionado desde nginx, repartiendolas equitativamente  entre 4 instancias escuchando en los puertos 8082, 8083, 8084 y 8085 respectivamente. 
 
@@ -102,10 +108,10 @@ nota: ejecutar el servidor en los puertos de la siguiente forma.
 - servidor modo CLUSTER en puerto 8084
 - servidor modo CLUSTER en puerto 8085
 
-véase imágen 7 del archivo de configuración de nginx
+véase imágen 6 del archivo de configuración de nginx:
+![imagen6](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna2b.jpg)
 
 El resto de las consultas a los otros endpoints del servidor se encuentran redirigidos a la intancia del servidor FORK del puerto 8080.
-
 
 ## Construido con 🛠️
 

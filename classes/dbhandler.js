@@ -1,6 +1,7 @@
 const fs = require ('fs')
 const {faker} = require ('@faker-js/faker')
 faker.locale = 'es'
+const logger = require('../logger.js')
 
 //normalizr
 const normalizr = require('normalizr');
@@ -31,7 +32,7 @@ module.exports = class DBHandler {
             try{
             await fs.promises.writeFile('./DB/chats.txt', fileStructure)
             } catch(error) {
-            console.log('error!: ',error)
+                logger.error('error!: ', error)
             }
         }
     }
@@ -47,7 +48,7 @@ module.exports = class DBHandler {
             data[0].mensajes.push(object)
             await fs.promises.writeFile("./DB/chats.txt", JSON.stringify(data, null, 2))
         } catch(error) {
-            console.log('error!: ',error)
+            logger.error('error!: ', error)
         }
     }
 
@@ -72,7 +73,7 @@ module.exports = class DBHandler {
             //se envían datos normalizados al frontend
             return normalizedDataJSON
         } catch(error) {
-            console.log('error!: ',error)
+            logger.error('error!: ', error)
         }
     }
 
@@ -87,7 +88,7 @@ module.exports = class DBHandler {
         try {
             await this.knex(this.tabla).insert(object)
         } catch (error) {
-            console.log('error!: ', error)
+            logger.error('error!: ', error)
         }
     }
 
@@ -96,7 +97,7 @@ module.exports = class DBHandler {
             let result = await this.knex.from(this.tabla).select("*")
             return result
         } catch (error) {
-            console.log('error!: ', error)
+            logger.error('error!: ', error)
         }
     }
 

@@ -12,8 +12,10 @@ const { engine } = require('express-handlebars');
 const passport = require('passport')
 const flash = require('express-flash')
 const yargs = require('yargs/yargs')(process.argv.slice(2))
-const cluster = require ('cluster')
-const numCPUs = require ('os').cpus().length
+const cluster = require('cluster')
+const numCPUs = require('os').cpus().length
+const compression = require('compression')
+const logger = require('./logger.js')
 
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
@@ -68,9 +70,9 @@ const { PORT, mode } = yargs
     })
     .argv
 
-if(mode == "CLUSTER") {
-    if(cluster.isMaster) {
-        for(let i = 0; i < numCPUs; i++) {
+if (mode == "CLUSTER") {
+    if (cluster.isMaster) {
+        for (let i = 0; i < numCPUs; i++) {
             cluster.fork()
         }
         console.log(`Proceso Maestro: ${process.pid}`)
@@ -104,7 +106,7 @@ const usr = new userHandler(mongoUrl)
 
 //"connection" se ejecuta la primera vez que se abre una nueva conexion
 io.on('connection', async (socket) => {
-    console.log('Nuevo cliente conectado')
+    logger.info('Nuevo cliente conectado')
     //Envio de los mensajes al cliente que se conecto
     socket.emit('mensajes', await chat.getChat())
     socket.emit('mensaje', await chat.getChat())
@@ -132,16 +134,19 @@ initializePassport(
 )
 
 app.get('/api/productos-test', auth, async (req, res) => {
+    logger.info(`ruta: '/api/productos-test' - método: get peticionada`)
     const { cant } = req.query
     res.render('test', { titulo: 'Pruebas de Productos aleatorios', lista: await prod.randomProducts(parseInt(cant)) })
 })
 
 app.get('/', auth, async (req, res) => {
+    logger.info(`ruta: '/' - método: get peticionada`)
     res.render('main', { email: req.user.email, titulo: 'Pagina principal', lista: prod.getAll(), mensajes: chat.getAll() })
 
 })
 
 app.get('/login', notAuth, (req, res) => {
+    logger.info(`ruta: '/login' - método: get peticionada`)
     res.render('login', { titulo: 'Login de usuario' })
 })
 
@@ -153,10 +158,12 @@ app.post('/login', notAuth, passport.authenticate('local', {
 
 
 app.get('/register', notAuth, (req, res) => {
+    logger.info(`ruta: '/register' - método: get peticionada`)
     res.render('register', { titulo: 'Registro de usuario nuevo' })
 })
 
 app.post('/register', notAuth, async (req, res) => {
+    logger.info(`ruta: '/register' - método: post peticionada`)
     if (usr.findUserById(req.body.email)) {
         res.render('register', { titulo: 'Registro de usuario nuevo', error: 'El usuario ya existe' })
     } else {
@@ -170,10 +177,12 @@ app.post('/register', notAuth, async (req, res) => {
 })
 
 app.get('/logout', auth, (req, res) => {
+    logger.info(`ruta: '/logout' - método: get peticionada`)
     res.render('logout', { usuario: req.user.email, titulo: 'cierre de sesión' })
 })
 
 app.get('/exit', auth, (req, res) => {
+    logger.info(`ruta: '/exit' - método: get peticionada`)
     req.logout(function (err) {
         if (err) { return next(err); }
         res.redirect('/');
@@ -181,14 +190,18 @@ app.get('/exit', auth, (req, res) => {
 })
 
 app.get('/info', (req, res) => {
+    logger.info(`ruta: '/info' - método: get peticionada`)
     res.render('info', { titulo: 'Info del Proceso' })
 })
 
-const routes = require ('./routers/rutas.js')
+const routes = require('./routers/rutas.js')
 
 app.use('/api/randoms', routes)
 
-
+app.get('*', (req, res) => {
+    logger.warn(`Error: 404 ruta no encontrada`)
+    res.json({ 'error': 'error 404, ruta no encontrada' })
+})
 
 function auth(req, res, next) {
     if (req.isAuthenticated()) {

@@ -15,7 +15,7 @@ module.exports = class UserHandler {
         try {
             mongoose.connect(this.url, connectionParams)
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -31,7 +31,7 @@ module.exports = class UserHandler {
             newUser.password = encPass
             newUser.save((err) => {
                 if (err) {
-                    console.error(err)
+                    logger.error(err)
                 }
             })
         }

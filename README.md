@@ -1,10 +1,10 @@
-# Desafío de Clase 30
+# Desafío de Clase 32
 
-El proyecto consta de seguir las pautas especificadas en las rúbricas del desafío a fin de demostrar capacidades y criterio en el uso de instancias de servidor tanto en modo fork así también como el uso de un servidor proxy inverso (NGINX)
+El proyecto consta de seguir las pautas especificadas en las rúbricas del desafío a fin de demostrar capacidades y criterio en el análisis de cargas de servidor en diferentes circunstancias (procesos bloqueantes y no bloqueantes).
 
 ## Comenzando 🚀
 
-esta entrega está desarrollada de acuerdo con las pautas del desafío de la clase n°30 del curso de Backend de coderhouse. comisión 40280
+esta entrega está desarrollada de acuerdo con las pautas del desafío de la clase n°32 del curso de Backend de coderhouse. comisión 40280
 url: "https://github.com/robercepp/desafios-Backend"
 
 ### Pre-requisitos 📋
@@ -13,9 +13,10 @@ url: "https://github.com/robercepp/desafios-Backend"
 - git.
 - node (ultima versión estable).
 - nodemon (instalado de forma global).
-- pm2
-- forever
-- nginx (v. 1.23.3 minimo)
+- Artillery
+- Autocannon
+- 0x
+- Google Chrome
 
 basicamente se trata de descargar el repositorio ya sea desde un pull desde la consola de git o manualmente y luego descomprimiendo.
 
@@ -31,87 +32,92 @@ Tras haber descargado el repositorio:
 
 - las pruebas se realizan de la siguiente forma: 
 
-- desde gitbash o powershell (o algúna otra consola dependiendo del sistema operativo) posicionandose en la carpeta del proyecto:
+- se incorpora al servidor la compresión gzip
+código:
+```npm i compression```
 
-Para iniciar en modo "fork":
-```nodemon server.js -p 8081 -m FORK```
-esto toma los parametros -p para puerto (8081 en este caso) y -m (modo de ejecución FORK)
+- se comprueba la ruta '/info' con y sin compresión, la diferencia de cantidad de bytes devueltos en un caso y otro.
 
-Para iniciar en modo "cluster":
-```nodemon server.js -p 8081 -m CLUSTER```
+ruta /info sin compresion:
+imagen 1
 
-nota: si no se especifica nada, los parametros por defecto son de modo fork en puerto 8080
+ruta /info con compresion
+imagen 2
 
-véase imagen 1:
-![imagen1](https://raw.githubusercontent.com/robercepp/desafios-Backend/main/docs/consignas/consigna1a.jpg)
 
-en la siguiente imágen se puede apreciar el servidor corriendo en modo fork y modo cluster en diferentes terminales.
-![imagen1b](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna1c.jpg)
+- se implementa "Winston" como sistema de loggueo registrando todas las peticiones recibidas por el servidor (info)
+- las peticiones sobre rutas y métodos inexistentes  en el servidor devuelven un log de warning.
+- los errores lanzados por la api en mensajes y productos devuelven un log de error.
+- además, los mensajes de error y warning quedan almacenados en los archivos error.log y warn.log respectivamente.
 
-- Se agrega una ventana de "info" con el número de procesadores del sistema en la dirección (http://localhost:8081/info) (cambiar puerto según el caso)
 
-véase imagen 2:
-![imagen2](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna1b.jpg)
+imagen 3
 
-- Este servidor tambíen posee capacidades para ser iniciado en instancias de "Forever" que veremos a continuación. 
 
-Para iniciar con forever
-```forever start server.js```
+- Consigna 2
 
-nota: no olvidar de cerrar forever al terminar de usar el servidor con: 
-```forever stopall```
+- se trabaja sobre la ruta en modo "FORK" agregando un console log sobre la petición del mismo a los efectos de probar su performance con la funcion bloqueante o sin ella. 
 
-véase imagen 3 para su demostración:
-![imagen3](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna1d.jpg)
+- 1 se obtiene el perfilamiento del servidor, realizando el test con --prof de node.js
 
-- se listan los procesos de forever para verificar su correcta aplicación: 
+codigo: 
+```node --prof server.js -p 8080 -m FORK```
 
-comandos a ejecutar: 
-```forever list```
+imagen 4
 
-en otra terminal ejecutar
-```netstat -ano | findstr 8080```
-(aplicable para windows)
 
-```lsof -i :8080```
-(aplicable para linux)
+- luego se analizan los resultados de la performance en ambos casos usando Artillery con 50 conexiones concurrentes de 20 request cada una. 
 
-nota: esto permite ver las aplicaciones que se encuentran actualmente ejecutandose en dicho puerto. para este ejemplo es el 8080
+codigo:
+en modo no bloqueante: 
+```artillery quick --count 50 -n 20 "http://localhost:8080/info" > result_nobloq.txt```
+y luego en modo bloqueante:
+```artillery quick --count 50 -n 20 "http://localhost:8080/info" > result_bloq.txt```
 
-- Ejecutar el servidor (con los parámetros adecuados: modo FORK) utilizando PM2 en sus modos FORK Y CLUSTER. Listar los procesos por PM2 y por sistema operativo
+imagen 5
 
-Modo fork: 
-```pm2 start server.js --name="ServerRobertFork" --watch -- --p 8080```
-nota: es aconsejable utilizar una terminal tipo BASH para la correcta ejecución de los parametros (se han encontrado incompatibilidades en POWERSHELL de windows 10)
+los resultados de artillery son:
 
-Modo cluster: 
-```pm2 start server.js --name="ServerRobertCluster" --watch -i max -- --p 8082```
-nota: idem modo fork.
+imagen 7
+nota: de los resultados de artillery entendemos que del proceso bloqueante, el tiempo de respuesta media del servidor fué de 135.7ms, mientras que el no bloqueante fué de 127.8ms. de respuesta.
 
-véase imagen 4:
-![imagen4](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna%201e.jpg)
 
-- Consigna 2:
+los resultados de los analisis de los archivos procesados con --prof-process son: 
 
-Se configura Nginx para balancear cargas del servidor.
-Se redirigen las consultas a /api/randoms a un cluster de servidores escuchando en el puerto 8081. (cluster creado desde nodemon usando el móludo nativo)
+imagen 6
+nota: para este caso se observa que el resultado con el proceso bloqueante posee 6255 ticks y para el no bloqueante son de 6090 ticks.
 
-véase imagen 5 del archivo de configuración (también disponible en la carpeta "docs")
-![imagen5](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna2a.jpg)
 
-Luego se modifica la configuración para que todas las consultas a /api/randoms sean redirigidas a un cluster de servidores gestionado desde nginx, repartiendolas equitativamente  entre 4 instancias escuchando en los puertos 8082, 8083, 8084 y 8085 respectivamente. 
+- luego se utiliza autocannon en línea de comandos, emulando 100 conexiones concurrentes realizadas en un tiempo de 20 segundos. los resultados de ambas pruebas se muestran a continuacion: 
 
-nota: ejecutar el servidor en los puertos de la siguiente forma. 
-- servidor modo FORK en puerto 8080
-- servidor modo CLUSTER en puerto 8082
-- servidor modo CLUSTER en puerto 8083
-- servidor modo CLUSTER en puerto 8084
-- servidor modo CLUSTER en puerto 8085
+código:
+```autocannon -c 100 -d 20 "http://localhost:8080/info"```
 
-véase imágen 6 del archivo de configuración de nginx:
-![imagen6](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/consigna2b.jpg)
+imagen 8
+nota: en este caso, el resultado arrojado por autocannon indica que sin funciones bloqueantes, el tiempo de respuesta del servidor disminuye.
 
-El resto de las consultas a los otros endpoints del servidor se encuentran redirigidos a la intancia del servidor FORK del puerto 8080.
+
+- también se perfila el servidor en modo inspector de node.js --inspect (se revisan los tiempos de los procesos menos performantes sobre el archivo fuente de inspección).
+código:
+```node --inspect server.js -p 8080 -m FORK```
+
+imagen9
+nota: en la imagen de análisis se observa que el proceso bloqueante "console.log(getinfo())" de la línea 193 tiene la mayor carga de tiempo de respuesta con 10.4ms
+
+- se implementa además un diagrama de flama con 0x, emulando la carga con Autocannon con los mismos parámetros anteriores. 
+
+
+los resultados arrojados son los siguientes:
+
+imagen 10
+imagen 11
+nota: para el proceso bloqueante si bien no se observa una elevada "temperatura" en el color de los gráficos si se obtiene una demora un poco mayor que si no hubiera un proceso bloqueante. en el gráfico de proceso no bloqueante se observa una respuesta mas rápida, con procesos mas cortos.
+
+
+## Conclusión
+
+- durante todo el análisis de datos obtenidos por la comparacion en el uso de un proceso bloqueante (console.log()) se observa que el uso desmedido de dichos procesos afectan significativamente la performance del servidor. Si bien en este caso particular la diferencia en tiempos de respuesta no fue tan significativa, se entiende que los servidores mas grandes, con un mayor número de solicitudes y con mayor carga de datos, pueden resultar perjudicados si no se toman en cuenta dichos análisis y se corrigen los cuellos de botella que puedan llegar a generar procesos bloqueantes sobre los mismos.
+
 
 ## Construido con 🛠️
 
@@ -119,6 +125,7 @@ Visual studio code
 express v.4.18.2,
 @faker-js/faker v.7.6.0,
 bcryptjs v.2.4.3,
+compression v.1.7.4,
 connect-mongo v.4.6.0,
 cookie-parser v.1.4.6,
 express-flash v.0.0.2,
@@ -131,7 +138,8 @@ normalizr v.3.6.2,
 passport v.0.6.0,
 passport-local v.1.0.0,
 socket.io v.5.1.4,
-yargs v.17.7.0
+yargs v.17.7.0,
+winston v.3.8.2
 
 ## Autores ✒️
 

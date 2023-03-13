@@ -39,10 +39,10 @@ código:
 - se comprueba la ruta '/info' con y sin compresión, la diferencia de cantidad de bytes devueltos en un caso y otro.
 
 ruta /info sin compresion:
-imagen 1
+![imagen1](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/1.jpg)
 
 ruta /info con compresion
-imagen 2
+![imagen2](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/2.jpg)
 
 
 - se implementa "Winston" como sistema de loggueo registrando todas las peticiones recibidas por el servidor (info)
@@ -50,8 +50,7 @@ imagen 2
 - los errores lanzados por la api en mensajes y productos devuelven un log de error.
 - además, los mensajes de error y warning quedan almacenados en los archivos error.log y warn.log respectivamente.
 
-
-imagen 3
+![imagen3](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/3.jpg)
 
 
 - Consigna 2
@@ -63,7 +62,7 @@ imagen 3
 codigo: 
 ```node --prof server.js -p 8080 -m FORK```
 
-imagen 4
+![imagen4](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/4.jpg)
 
 
 - luego se analizan los resultados de la performance en ambos casos usando Artillery con 50 conexiones concurrentes de 20 request cada una. 
@@ -74,17 +73,17 @@ en modo no bloqueante:
 y luego en modo bloqueante:
 ```artillery quick --count 50 -n 20 "http://localhost:8080/info" > result_bloq.txt```
 
-imagen 5
+![imagen5](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/5.jpg)
 
 los resultados de artillery son:
 
-imagen 7
+![imagen7](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/7.jpg)
 nota: de los resultados de artillery entendemos que del proceso bloqueante, el tiempo de respuesta media del servidor fué de 135.7ms, mientras que el no bloqueante fué de 127.8ms. de respuesta.
 
 
 los resultados de los analisis de los archivos procesados con --prof-process son: 
 
-imagen 6
+![imagen6](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/6.jpg)
 nota: para este caso se observa que el resultado con el proceso bloqueante posee 6255 ticks y para el no bloqueante son de 6090 ticks.
 
 
@@ -93,7 +92,7 @@ nota: para este caso se observa que el resultado con el proceso bloqueante posee
 código:
 ```autocannon -c 100 -d 20 "http://localhost:8080/info"```
 
-imagen 8
+![imagen8](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/8.jpg)
 nota: en este caso, el resultado arrojado por autocannon indica que sin funciones bloqueantes, el tiempo de respuesta del servidor disminuye.
 
 
@@ -101,7 +100,7 @@ nota: en este caso, el resultado arrojado por autocannon indica que sin funcione
 código:
 ```node --inspect server.js -p 8080 -m FORK```
 
-imagen9
+![imagen9](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/9.jpg)
 nota: en la imagen de análisis se observa que el proceso bloqueante "console.log(getinfo())" de la línea 193 tiene la mayor carga de tiempo de respuesta con 10.4ms
 
 - se implementa además un diagrama de flama con 0x, emulando la carga con Autocannon con los mismos parámetros anteriores. 
@@ -109,8 +108,8 @@ nota: en la imagen de análisis se observa que el proceso bloqueante "console.lo
 
 los resultados arrojados son los siguientes:
 
-imagen 10
-imagen 11
+![imagen10](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/10.jpg)
+![imagen11](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/11.jpg)
 nota: para el proceso bloqueante si bien no se observa una elevada "temperatura" en el color de los gráficos si se obtiene una demora un poco mayor que si no hubiera un proceso bloqueante. en el gráfico de proceso no bloqueante se observa una respuesta mas rápida, con procesos mas cortos.
 
 

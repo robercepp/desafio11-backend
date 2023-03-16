@@ -43,10 +43,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(flash())
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: process.env.MONGOURL,
+        mongoUrl: 'mongodb+srv://robercepp:robercepp@cluster1.awwy7x0.mongodb.net/?retryWrites=true&w=majority',
         mongoOptions: advancedOptions
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: "587541523569",
     resave: false,
     saveUninitialized: false,
     cookie:

@@ -90,7 +90,6 @@ if (mode == "CLUSTER") {
 //servidor
 function iniciarServidor() {
     const connectServer = httpServer.listen(PORT, () => console.log(`Servidor Express con WebSocket iniciado en modo ${mode} escuchando el puerto ${connectServer.address().port} - Proceso N° ${process.pid}`))
-    console.log(process.env.MONGOURL)
     connectServer.on("error", error => console.log(`Error en servidor ${error}`))
 }
 

@@ -43,10 +43,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(flash())
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://robercepp:robercepp@cluster1.awwy7x0.mongodb.net/?retryWrites=true&w=majority',
+        mongoUrl: process.env.MONGOURL,
         mongoOptions: advancedOptions
     }),
-    secret: "587541523569",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie:
@@ -65,7 +65,7 @@ const { PORT, mode } = yargs
 
     })
     .default({
-        PORT: 8080,
+        PORT: process.env.PORT || 8080,
         mode: 'FORK'
     })
     .argv

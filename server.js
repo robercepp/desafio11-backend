@@ -65,7 +65,7 @@ const { PORT, mode } = yargs
 
     })
     .default({
-        PORT: 8080,
+        PORT: process.env.PORT || 8080,
         mode: 'FORK'
     })
     .argv
@@ -90,6 +90,7 @@ if (mode == "CLUSTER") {
 //servidor
 function iniciarServidor() {
     const connectServer = httpServer.listen(PORT, () => console.log(`Servidor Express con WebSocket iniciado en modo ${mode} escuchando el puerto ${connectServer.address().port} - Proceso N° ${process.pid}`))
+    console.log(process.env.MONGOURL)
     connectServer.on("error", error => console.log(`Error en servidor ${error}`))
 }
 

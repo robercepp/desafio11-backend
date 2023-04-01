@@ -57,9 +57,9 @@ socket.on('producto', productos => {
         const productosHTML = productos
         .map(pro => `
         <tr class="tr2">
-        <td class="td1">${pro.title}</td>
-        <td class="td2">${pro.price}</td>
-        <td class="td3"><img src="${pro.thumbnail}"></td>
+        <td class="td1">${pro.nombre}</td>
+        <td class="td2">${pro.precio}</td>
+        <td class="td3"><img class="product-thumbnail" src="${pro.thumbnail}"></td>
         </tr>`)
         .join('')
     celdasProductos.innerHTML = productosHTML
@@ -119,8 +119,8 @@ function addMessage() {
 
 function addProducto (e) {
     const producto= {
-        title: document.getElementById('title').value,
-        price: document.getElementById('price').value,
+        nombre: document.getElementById('title').value,
+        precio: document.getElementById('price').value,
         thumbnail: document.getElementById('thumbnail').value
     };
     socket.emit('new-producto', producto);

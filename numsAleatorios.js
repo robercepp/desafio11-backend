@@ -1,10 +1,10 @@
-// process.on('message', msg => {
-//     if (msg) {
-//         calculo(msg)
-//     } else {
-//         calculo(100000000)
-//     }
-// })
+process.on('message', msg => {
+    if (msg) {
+        calculo(msg)
+    } else {
+        calculo(100000000)
+    }
+})
 
 const calculo = (cant = 10000) => {
     let numbers = []
@@ -22,9 +22,7 @@ const calculo = (cant = 10000) => {
         const [key, value] = entry
         resultado.push({ 'Numero': key, 'Ocurrencias': value })
     })
-    return resultado //quitar este return cuando vuelva el modo fork
-    // process.send(resultado)
-    // process.exit()
+   
+    process.send(resultado)
+    process.exit()
 }
-
-module.exports = {calculo} //quitar esto cuando vuelva el modo fork

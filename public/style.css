@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 .titulo {
@@ -100,6 +99,10 @@
 
 .inputs {
     margin: 10px 0
+}
+
+.product-thumbnail{
+    width: 100px;
 }
 
 .chat-container {

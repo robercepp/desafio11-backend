@@ -1,52 +1,53 @@
-const mongoose = require('mongoose')
-const userModel = require('../models/userModel.js')
-const bcript = require('bcryptjs')
+const userModel = require("../models/usuario.js");
+const bcript = require("bcryptjs");
+const { connectDB } = require("../utils/config.js");
 
 module.exports = class UserHandler {
-    constructor(url) {
-        this.url = url
-    }
+  constructor(url) {
+    this.url = url;
+  }
 
-    connectDatabase() {
-        const connectionParams = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
+  async saveUser(user) {
+    connectDB();
+    const findUser = await this.findUserByMail(user.email);
+    if (findUser) {
+      console.log("ya hay un usuario registrado");
+      return null;
+    } else {
+      var newUser = new userModel();
+      newUser.id = await this.getHighestId();
+      newUser.email = user.email;
+      const encPass = await bcript.hash(user.password, 10);
+      newUser.password = encPass;
+      newUser.save((err) => {
+        if (err) {
+          logger.error(err);
         }
-        try {
-            mongoose.connect(this.url, connectionParams)
-        } catch (error) {
-            logger.error(error)
-        }
+      });
     }
+  }
 
-    async saveUser(email, password) {
-        this.connectDatabase()
-        const user = await this.findUserByMail(email)
-        if (user) {
-            return null
-        } else {
-            var newUser = new userModel
-            newUser.email = email
-            const encPass = await bcript.hash(password, 10)
-            newUser.password = encPass
-            newUser.save((err) => {
-                if (err) {
-                    logger.error(err)
-                }
-            })
-        }
+  async findUserByMail(email) {
+    connectDB();
+    const response = await userModel.findOne({ email: email });
+    return response;
+  }
+
+  async findUserById(id) {
+    connectDB();
+    const response = await userModel.findOne({ id: id });
+    return response;
+  }
+
+  async getHighestId() {
+    connectDB();
+    const data = await userModel.find({}, { id: 1, _id: 0 });
+    if (data.length == 0) {
+      return 1;
+    } else {
+      const highest = Math.max(...data.map((o) => o.id));
+      const result = highest + 1;
+      return result;
     }
-
-    async findUserByMail(email) {
-        this.connectDatabase()
-        const response = await userModel.findOne({ email: email })
-        return response
-    }
-
-    async findUserById(id) {
-        this.connectDatabase()
-        const response = await userModel.findOne({ id: id })
-        return response
-    }
-
-}
+  }
+};

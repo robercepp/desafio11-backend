@@ -1,6 +1,6 @@
-# Desafío de Clase 32
+# Desafío de Clase 38
 
-El proyecto consta de seguir las pautas especificadas en las rúbricas del desafío a fin de demostrar capacidades y criterio en el análisis de cargas de servidor en diferentes circunstancias (procesos bloqueantes y no bloqueantes).
+El proyecto consta de seguir las pautas especificadas en las rúbricas del desafío a fin de demostrar capacidades y criterio en la reorganización y separación del proyecto por capas.
 
 ## Comenzando 🚀
 
@@ -13,10 +13,6 @@ url: "https://github.com/robercepp/desafios-Backend"
 - git.
 - node (ultima versión estable).
 - nodemon (instalado de forma global).
-- Artillery
-- Autocannon
-- 0x
-- Google Chrome
 
 basicamente se trata de descargar el repositorio ya sea desde un pull desde la consola de git o manualmente y luego descomprimiendo.
 
@@ -30,93 +26,7 @@ Tras haber descargado el repositorio:
 
 ## Ejecutando las pruebas ⚙️
 
-- las pruebas se realizan de la siguiente forma: 
-
-- se incorpora al servidor la compresión gzip
-código:
-```npm i compression```
-
-- se comprueba la ruta '/info' con y sin compresión, la diferencia de cantidad de bytes devueltos en un caso y otro.
-
-ruta /info sin compresion:
-![imagen1](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/1.jpg)
-
-ruta /info con compresion
-![imagen2](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/2.jpg)
-
-
-- se implementa "Winston" como sistema de loggueo registrando todas las peticiones recibidas por el servidor (info)
-- las peticiones sobre rutas y métodos inexistentes  en el servidor devuelven un log de warning.
-- los errores lanzados por la api en mensajes y productos devuelven un log de error.
-- además, los mensajes de error y warning quedan almacenados en los archivos error.log y warn.log respectivamente.
-
-![imagen3](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/3.jpg)
-
-
-- Consigna 2
-
-- se trabaja sobre la ruta en modo "FORK" agregando un console log sobre la petición del mismo a los efectos de probar su performance con la funcion bloqueante o sin ella. 
-
-- 1 se obtiene el perfilamiento del servidor, realizando el test con --prof de node.js
-
-codigo: 
-```node --prof server.js -p 8080 -m FORK```
-
-![imagen4](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/4.jpg)
-
-
-- luego se analizan los resultados de la performance en ambos casos usando Artillery con 50 conexiones concurrentes de 20 request cada una. 
-
-codigo:
-en modo no bloqueante: 
-```artillery quick --count 50 -n 20 "http://localhost:8080/info" > result_nobloq.txt```
-y luego en modo bloqueante:
-```artillery quick --count 50 -n 20 "http://localhost:8080/info" > result_bloq.txt```
-
-![imagen5](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/5.jpg)
-
-los resultados de artillery son:
-
-![imagen7](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/7.jpg)
-nota: de los resultados de artillery entendemos que del proceso bloqueante, el tiempo de respuesta media del servidor fué de 135.7ms, mientras que el no bloqueante fué de 127.8ms. de respuesta.
-
-
-los resultados de los analisis de los archivos procesados con --prof-process son: 
-
-![imagen6](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/6.jpg)
-nota: para este caso se observa que el resultado con el proceso bloqueante posee 6255 ticks y para el no bloqueante son de 6090 ticks.
-
-
-- luego se utiliza autocannon en línea de comandos, emulando 100 conexiones concurrentes realizadas en un tiempo de 20 segundos. los resultados de ambas pruebas se muestran a continuacion: 
-
-código:
-```autocannon -c 100 -d 20 "http://localhost:8080/info"```
-
-![imagen8](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/8.jpg)
-nota: en este caso, el resultado arrojado por autocannon indica que sin funciones bloqueantes, el tiempo de respuesta del servidor disminuye.
-
-
-- también se perfila el servidor en modo inspector de node.js --inspect (se revisan los tiempos de los procesos menos performantes sobre el archivo fuente de inspección).
-código:
-```node --inspect server.js -p 8080 -m FORK```
-
-![imagen9](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/9.jpg)
-nota: en la imagen de análisis se observa que el proceso bloqueante "console.log(getinfo())" de la línea 193 tiene la mayor carga de tiempo de respuesta con 10.4ms
-
-- se implementa además un diagrama de flama con 0x, emulando la carga con Autocannon con los mismos parámetros anteriores. 
-
-
-los resultados arrojados son los siguientes:
-
-![imagen10](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/10.jpg)
-![imagen11](https://github.com/robercepp/desafios-Backend/blob/main/docs/consignas/11.jpg)
-nota: para el proceso bloqueante si bien no se observa una elevada "temperatura" en el color de los gráficos si se obtiene una demora un poco mayor que si no hubiera un proceso bloqueante. en el gráfico de proceso no bloqueante se observa una respuesta mas rápida, con procesos mas cortos.
-
-
-## Conclusión
-
-- durante todo el análisis de datos obtenidos por la comparacion en el uso de un proceso bloqueante (console.log()) se observa que el uso desmedido de dichos procesos afectan significativamente la performance del servidor. Si bien en este caso particular la diferencia en tiempos de respuesta no fue tan significativa, se entiende que los servidores mas grandes, con un mayor número de solicitudes y con mayor carga de datos, pueden resultar perjudicados si no se toman en cuenta dichos análisis y se corrigen los cuellos de botella que puedan llegar a generar procesos bloqueantes sobre los mismos.
-
+Dada la naturaleza de la entrega. esta instancia no presenta pruebas disponibles para su uso.. solamente el proyecto es reorganizado a fin de separar las funciones por modulos facilmente discernibles.
 
 ## Construido con 🛠️
 

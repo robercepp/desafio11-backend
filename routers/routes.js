@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { fork } = require("child_process");
 const logger = require("../logger.js");
 const { listAllUsers, createUser, findUser } = require("../controllers/usuarios.js");
-const { listAll, createProduct, randomize } = require("../controllers/productos.js");
+const { listAll, createProduct, randomize, randy } = require("../controllers/productos.js");
 const { getAllChats } = require("../controllers/chat.js");
 const passport = require("passport");
 
@@ -86,10 +86,12 @@ router.post("/api/usuarios", notAuth, async (req, res) => {
 
 //manejo de productos (API)
 router.get("/api/productos", auth, async (req, res) => {
+  logger.info(`ruta: '${req.url}' - método: get peticionada`);
   const resultado = await listAll();
   return res.send(resultado);
 });
 router.post("/api/productos", async (req, res) => {
+  logger.info(`ruta: '${req.url}' - método: post peticionada`);
   try {
     await createProduct(req.body);
   } catch (error) {
@@ -99,7 +101,7 @@ router.post("/api/productos", async (req, res) => {
 
 //Productos aleatorios
 router.get("/api/randoms", auth, async (req, res) => {
-  logger.info(`ruta: '/api/randoms' - método: get peticionada`);
+  logger.info(`ruta: '${req.url}' - método: get peticionada`);
   const { cant } = req.query;
   const child = fork("./numsAleatorios.js");
   child.send(parseInt(cant));
@@ -108,22 +110,22 @@ router.get("/api/randoms", auth, async (req, res) => {
   });
 });
 
-router.get("/api/productos-test", auth, async (req, res) => {
-  logger.info(`ruta: '/api/productos-test' - método: get peticionada`);
-  const cant = parseInt(req.query.cant);
-  res.render("test", {
+router.get('/api/productos-test', async (req, res) => {
+  logger.info(`ruta: '${req.url}' - método: get peticionada`);
+  const {cant} = req.query
+  res.render("test",{
     titulo: "Pruebas de Productos aleatorios",
-    lista: await randomize(cant),
-  });
-});
+    lista: await randomize(parseInt(cant))
+  })
+})
 
 router.get("/info", auth, (req, res) => {
-  logger.info(`ruta: '/info' - método: get peticionada`);
+  logger.info(`ruta: '${req.url}' - método: get peticionada`);
   res.render("info", { titulo: "Info del Proceso" });
 });
 
 router.get("*", async (req, res) => {
-  res.json({ error: "error 404, ruta no encontrada" });
+  res.json({ error: `error 404, ruta '${req.url}' no encontrada` });
 });
 
 //modulos de autorización

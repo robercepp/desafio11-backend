@@ -124,13 +124,13 @@ module.exports = class DBHandler {
   }
 
   //randomizador de productos de prueba (faker)
-  async randomProducts(cant = 5) {
+  async randomProducts(cant) {
     let objetos = [];
     for (let i = 0; i < cant; i++) {
-      let titulo = faker.commerce.productName();
+      let titulo = await faker.commerce.productName();
       let precio = (Math.floor(Math.random() * 15) + 5).toFixed(2);
-      let imgUrl = faker.image.technics(150, 150, true);
-      objetos.push({ title: titulo, price: precio, thumbnail: imgUrl });
+      let imgUrl = await faker.image.technics(150, 150, true);
+      objetos.push({title: titulo, price: precio, thumbnail: imgUrl})
     }
     return objetos;
   }

@@ -12,9 +12,15 @@ async function createProduct(product) {
     return resultado;
 };
 
-async function randomize(cant){
-    const resultado = await productDao.random(cant)
-    return resultado
+async function randomize(cant) {
+    if (isNaN(cant)) {
+        const resultado = await productDao.random(5)
+        return resultado
+    } else {
+        const resultado = await productDao.random(cant)
+        return resultado
+    }
+
 }
 
 module.exports = {listAll, createProduct, randomize}

@@ -9,7 +9,6 @@ const input = document.getElementById('inputSocket')
 const main = document.getElementById('parrafo')
 const boton = document.getElementById('btn')
 const celdasProductos = document.getElementById('products-container')
-const celdasProductosR = document.getElementById('products-container-r')
 const compressionRatio = document.getElementById('compression')
 
 // Escucho los mensajes enviados por el servidor
@@ -63,18 +62,6 @@ socket.on('producto', productos => {
         </tr>`)
         .join('')
     celdasProductos.innerHTML = productosHTML
-})
-
-socket.on('productos-random', productos =>{
-    const productosHTML = productos
-    .map(pro =>`
-    <tr class="tr2">
-    <td class="td1">${pro.title}</td>
-    <td class="td2">${pro.price}</td>
-    <td class="td3"><img src="${pro.thumbnail}"></td>
-    </tr>`)
-    .join('')
-    celdasProductosR.innerHTML = productosHTML
 })
 
 //Envio de los mensajes al servidor

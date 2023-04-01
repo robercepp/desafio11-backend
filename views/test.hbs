@@ -1,27 +1,34 @@
-<!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.2/dist/normalizr.browser.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/normalizr@3.6.2/dist/normalizr.browser.min.js"
+    ></script>
     <title>{{titulo}}</title>
-</head>
+  </head>
 
-<body class="body">
+  <body class="body">
     <table>
-        <tr class="tr1">
-            <th class="th1">NOMBRE</th>
-            <th class="th2">PRECIO</th>
-            <th class="th3">FOTO</th>
+      <tr class="tr1">
+        <th class="th1">NOMBRE</th>
+        <th class="th2">PRECIO</th>
+        <th class="th3">FOTO</th>
+      </tr>
+      {{#each lista}}
+        <tr class="tr2">
+          <td class="td1">{{title}}</td>
+          <td class="td2">{{price}}</td>
+          <td class="td3"><img src={{thumbnail}} /></td>
         </tr>
+      {{/each}}
     </table>
     <table id="products-container-r" class="table">
     </table>
-    <script src="../js/main.js"></script>
-</body>
+  </body>
 
 </html>

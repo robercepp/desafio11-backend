@@ -1,6 +1,6 @@
 const logger = require("../logger.js");
 const { getAllChats, saveChat } = require("../controllers/chat.js");
-const { listAll, createProduct, randomize } = require("../controllers/productos.js");
+const { listAll, createProduct} = require("../controllers/productos.js");
 const {getInfo} = require ("../utils/systemInfo.js")
 
 //"connection" se ejecuta la primera vez que se abre una nueva conexion
@@ -12,7 +12,6 @@ module.exports = (io) => {
     socket.emit("mensaje", await getAllChats());
     socket.emit("productos", await listAll());
     socket.emit("producto", await listAll());
-    socket.emit("productos-random", await randomize());
     socket.emit("info", getInfo());
     //Escucho los mensajes enviados por el cliente
     socket.on("new-message", async (data) => {

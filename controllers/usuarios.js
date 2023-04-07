@@ -1,4 +1,4 @@
-const { userDao } = require("../daos/DaoGeneral.js");
+const { userDao } = require("../repository/Factory.js");
 
 //usuarios
 

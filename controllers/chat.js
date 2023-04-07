@@ -1,4 +1,4 @@
-const { chatDao } = require("../daos/DaoGeneral.js");
+const { chatDao } = require("../repository/Factory.js");
 
 //usuarios
 

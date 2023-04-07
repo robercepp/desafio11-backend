@@ -1,13 +1,15 @@
-const dbhandler = require ('../classes/dbhandler.js')
+const ProductosDao = require ('../daos/ProductosDaoDb.js')
 const producto = require("../models/producto.js")
+const ProductsDTO = require ('../dtos/productosDTO.js')
 
-module.exports = class ProductosDaoMongoDb extends dbhandler {
+module.exports = class ProductosRepository extends ProductosDao {
     constructor() {
         super(producto)
     }
     async listAll() {
             const data = await this.getAll()
-            return data;
+            const productosDTO = new ProductsDTO(data)
+            return productosDTO.readData();
     }
 
     async save (product) {

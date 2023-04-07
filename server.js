@@ -11,7 +11,6 @@ require("./utils/socketService.js")(io);
 const { engine } = require("express-handlebars");
 const passport = require("passport");
 const flash = require("express-flash");
-const yargs = require("yargs/yargs")(process.argv.slice(2));
 const cluster = require("cluster");
 const logger = require("./logger.js");
 const numCPUs = require("os").cpus().length;
@@ -55,16 +54,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Uso de Yargs para determinar el puerto del servidor
-const { PORT, mode } = yargs
-  .alias({
-    p: "PORT",
-    m: "mode",
-  })
-  .default({
-    PORT: process.env.PORT || 8080,
-    mode: "FORK",
-  }).argv;
+//Uso de Yargs para determinar variables de ejecución de servidor
+const {PORT, mode, DAO} = require ("./utils/yargs.js")
 
 if (mode == "CLUSTER") {
   if (cluster.isMaster) {
@@ -88,7 +79,7 @@ function iniciarServidor() {
     logger.info(
       `Servidor Express con WebSocket iniciado en modo ${mode} escuchando el puerto ${
         connectServer.address().port
-      } - Proceso N° ${process.pid}`
+      } - Proceso N° ${process.pid} - DAO tipo: ${DAO}`
     )
   );
   connectServer.on("error", (error) =>

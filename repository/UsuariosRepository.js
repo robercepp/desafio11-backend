@@ -1,7 +1,7 @@
-const userHandler = require("../classes/userHandler.js");
+const userHandler = require("../daos/UsuariosDaoDB.js");
 const usuario = require("../models/usuario.js");
 
-module.exports = class ProductosDaoMongoDb extends userHandler {
+module.exports = class UsuariosRepository extends userHandler {
   constructor() {
     super(usuario);
   }

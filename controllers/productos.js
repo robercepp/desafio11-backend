@@ -1,4 +1,4 @@
-const {productDao} = require ('../daos/DaoGeneral.js')
+const {productDao} = require ('../repository/Factory.js')
 
 //productos
 

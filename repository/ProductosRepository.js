@@ -13,12 +13,7 @@ module.exports = class ProductosRepository extends ProductosDao {
     }
 
     async save (product) {
-        const data = await this.saveProduct(product)
-        return data
-    }
-
-    async random(cant) {
-        const data = await this.randomProducts(cant)
+        const data = await this.save(product)
         return data
     }
 }

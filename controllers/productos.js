@@ -1,4 +1,4 @@
-const {productDao} = require ('../repository/Factory.js')
+const {productDao, randomProducts} = require ('../repository/Factory.js')
 
 //productos
 
@@ -14,10 +14,10 @@ async function createProduct(product) {
 
 async function randomize(cant) {
     if (isNaN(cant)) {
-        const resultado = await productDao.random(5)
+        const resultado = await randomProducts.random(5)
         return resultado
     } else {
-        const resultado = await productDao.random(cant)
+        const resultado = await randomProducts.random(cant)
         return resultado
     }
 

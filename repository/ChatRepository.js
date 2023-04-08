@@ -6,13 +6,13 @@ module.exports = class ChatRepository extends ChatDaoDb {
         super()
     }
     async listAll() {
-            const data = await this.getChat()
+            const data = await this.getAll()
             const mensajes = new ChatDTO(data)
-            return mensajes.normalize();
+            return mensajes.readData();
     }
 
     async save (object) {
-        const data = await this.saveChat(object)
+        const data = await this.save(object)
         return data
     }
 }

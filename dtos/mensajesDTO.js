@@ -7,7 +7,7 @@ module.exports = class ChatsDto {
   constructor(data) {
     this.data = data;
   }
-  normalize() {
+  async readData() {
     //normalización de datos
     const author = new schema.Entity(
       "authors",

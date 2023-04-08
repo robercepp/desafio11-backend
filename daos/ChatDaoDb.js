@@ -9,8 +9,21 @@ module.exports = class ChatDaoDb {
   constructor(file) {
     this.file = file || process.env.CHATFILE;
   }
-
-  async saveChat(object) {
+  async getAll() {
+    await fileChecker();
+    try {
+      const datos = await fs.promises.readFile("./DB/chats.txt", "utf-8");
+      const data = JSON.parse(datos);
+      return data;
+    } catch (error) {
+      logger.error("error!: ", error);
+    }
+  }
+  print(objeto) {
+    console.log(util.inspect(objeto, true, 12, true));
+  }
+  
+  async save(object) {
     await fileChecker();
     try {
       const datos = await fs.promises.readFile("./DB/chats.txt", "utf-8");
@@ -26,19 +39,5 @@ module.exports = class ChatDaoDb {
     } catch (error) {
       logger.error("error!: ", error);
     }
-  }
-
-  async getChat() {
-    await fileChecker();
-    try {
-      const datos = await fs.promises.readFile("./DB/chats.txt", "utf-8");
-      const data = JSON.parse(datos);
-      return data;
-    } catch (error) {
-      logger.error("error!: ", error);
-    }
-  }
-  print(objeto) {
-    console.log(util.inspect(objeto, true, 12, true));
   }
 };

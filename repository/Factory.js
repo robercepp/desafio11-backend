@@ -1,31 +1,46 @@
-require("dotenv").config();
-
-const RandomsRepo = require ('./RandomProductsRepository.js')
-const ProductosMongo = require("./ProductosRepository.js");
+const RandomsRepo = require("./RandomProductsRepository.js");
 const UsuariosMongo = require("./UsuariosRepository.js");
-const ChatDao = require("./ChatRepository.js");
-const { DAO } = require("../utils/yargs.js");
 const Singleton = require("../utils/singleton.js");
 
-function factoryRepositoy() {
+//de productos
+const ProductosDao = require("../daos/ProductosDaoDb.js");
+const producto = require("../models/producto.js");
+const ProductsDTO = require("../dtos/productosDTO.js");
 
-  this.createRepository = function (repo) {
-    (Singleton.getInstance());
-    if (repo == 'productos') {
-      return new ProductosMongo()
-    } else if (repo == 'usuarios') {
-      return new UsuariosMongo()
-    }else if (repo == 'mensajes') {
-      return new ChatDao()
+//de Mensajes
+const MensajesDao = require("../daos/ChatDaoDb.js");
+const MensajesDTO = require("../dtos/mensajesDTO.js");
+
+function factoryRepository(extention) {
+  this.createRepository = function () {
+    Singleton.getInstance();
+    if (extention) {
+      return new Repository(producto, ProductsDTO);
+    } else if (!extention) {
+      return new Repository(null, MensajesDTO);
     }
-  } 
+  };
+  class Repository extends (extention ? ProductosDao : MensajesDao) {
+    constructor(schema, DTO) {
+      super(schema);
+      this.DTO = DTO;
+    }
+    async listAll() {
+      const data = await this.getAll();
+      const dtoResponse = new this.DTO(data);
+      return dtoResponse.readData();
+    }
+    async save(product) {
+      const dao = new this.DAO();
+      const data = await dao.save(product);
+      return data;
+    }
+  }
 }
 
-var factory = new factoryRepositoy()
-var randomProducts = new RandomsRepo()
-var productDao = factory.createRepository('productos')
-var userDao = factory.createRepository('usuarios')
-var chatDao = factory.createRepository('mensajes')
-
+var productDao = new factoryRepository(true).createRepository();
+var chatDao = new factoryRepository(false).createRepository();
+var randomProducts = new RandomsRepo();
+var userDao = new UsuariosMongo();
 
 module.exports = { productDao, userDao, chatDao, randomProducts };

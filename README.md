@@ -59,7 +59,7 @@ La prueba con su nombre (ej: "lectura de productos") y si esta fue realizada sat
 para el manejo de pruebas se utiliza en repositiorio "mocha" y para la comprobación de tareas se utiliza el repositiorio "chai"
 según se puede apreciar en la siguiente imagen. 
 
-![imagen 3](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/3.jpg
+![imagen 3](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/3.jpg)
 
 - La ejecución de las pruebas mediante "mocha" se realizan también por script de package.json mediante el siguiente comando: 
 ```sh

@@ -1,8 +1,9 @@
-const router = require("express").Router();
+const express = require ('express')
+const router = express.Router()
 const { fork } = require("child_process");
 const logger = require("../logger.js");
 const { listAllUsers, createUser, findUser } = require("../controllers/usuarios.js");
-const { listAll, createProduct, randomize, randy } = require("../controllers/productos.js");
+const prod = require("../controllers/productos.js");
 const { getAllChats } = require("../controllers/chat.js");
 const passport = require("passport");
 
@@ -26,7 +27,7 @@ router.get("/", auth, async (req, res) => {
   res.render("main", {
     email: req.user.email,
     titulo: "Pagina principal",
-    lista: listAll(),
+    lista: prod.listAll(),
     mensajes: getAllChats(),
   });
 });
@@ -85,23 +86,19 @@ router.post("/api/usuarios", notAuth, async (req, res) => {
 });
 
 //manejo de productos (API)
-router.get("/api/productos", auth, async (req, res) => {
-  logger.info(`ruta: '${req.url}' - método: get peticionada`);
-  const resultado = await listAll();
-  return res.send(resultado);
-});
-router.post("/api/productos", async (req, res) => {
-  logger.info(`ruta: '${req.url}' - método: post peticionada`);
-  try {
-    await createProduct(req.body);
-  } catch (error) {
-    console.log(error);
-  }
-});
+router.get("/api/productos", prod.listAllProducts);
+
+router.get("/api/productos/:id", prod.listProductById)
+
+router.post("/api/productos", prod.createProduct);
+
+router.put('/api/productos/:id', prod.modifyProduct)
+
+router.delete('/api/productos/:id', prod.deleteProduct)
 
 //Productos aleatorios
 router.get("/api/randoms", auth, async (req, res) => {
-  logger.info(`ruta: '${req.url}' - método: get peticionada`);
+  
   const { cant } = req.query;
   const child = fork("./numsAleatorios.js");
   child.send(parseInt(cant));
@@ -115,7 +112,7 @@ router.get('/api/productos-test', async (req, res) => {
   const {cant} = req.query
   res.render("test",{
     titulo: "Pruebas de Productos aleatorios",
-    lista: await randomize(parseInt(cant))
+    lista: await prod.randomizeProducts(parseInt(cant))
   })
 })
 

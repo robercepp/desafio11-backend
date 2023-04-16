@@ -1,6 +1,6 @@
 const logger = require("../logger.js");
 const { getAllChats, saveChat } = require("../controllers/chat.js");
-const { listAll, createProduct} = require("../controllers/productos.js");
+const {listAll, listAllProducts, createProduct} = require("../controllers/productos.js");
 const {getInfo} = require ("../utils/systemInfo.js")
 
 //"connection" se ejecuta la primera vez que se abre una nueva conexion

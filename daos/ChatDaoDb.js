@@ -23,7 +23,7 @@ module.exports = class ChatDaoDb {
     console.log(util.inspect(objeto, true, 12, true));
   }
   
-  async save(object) {
+  async saveItem(object) {
     await fileChecker();
     try {
       const datos = await fs.promises.readFile("./DB/chats.txt", "utf-8");

@@ -16,4 +16,13 @@ module.exports = class ProductosDTO {
         });
         return products
     }
+
+    readSingleProduct(){
+        const product = {
+            nombre: this.data.nombre,
+            precio: this.data.precio,
+            thumbnail: this.data.thumbnail
+        }
+        return product
+    }
 }

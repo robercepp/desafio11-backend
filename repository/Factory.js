@@ -13,7 +13,7 @@ const MensajesDTO = require("../dtos/mensajesDTO.js");
 
 function factoryRepository(extention) {
   this.createRepository = function () {
-    Singleton.getInstance();
+    console.log(Singleton.getInstance());
     if (extention) {
       return new Repository(producto, ProductsDTO);
     } else if (!extention) {
@@ -30,9 +30,25 @@ function factoryRepository(extention) {
       const dtoResponse = new this.DTO(data);
       return dtoResponse.readData();
     }
-    async save(product) {
-      const dao = new this.DAO();
-      const data = await dao.save(product);
+
+    async listById(id) {
+      const data = await this.getById(id);
+      const dtoResponse = new this.DTO(data);
+      return dtoResponse.readSingleProduct();
+    }
+
+    async save(payload) {
+      const data = await this.saveItem(payload);
+      return data;
+    }
+
+    async modify(payload, id) {
+      const data = await this.updateItem(payload, id);
+      return data;
+    }
+
+    async delete(id) {
+      const data = await this.deleteById(id);
       return data;
     }
   }

@@ -39,7 +39,7 @@ npm install
 
 - Se desarrolla un cliente HTTP en Axios que envía peticiones al servidor y prueba la funcionalidad de la api en el listado, carga, modificación, y eliminación de productos.
 
-[imagen 1]
+![imagen 1](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/1.jpg)
 
 - Los test se realizan en un modulo independiente dentro del archivo "/tests/tests.js estos se ejecutan mediante un script:
 
@@ -50,7 +50,7 @@ npm run test-manual
 estos prueban la capacidad de respuesta del servidor para manejar peticiones de listado, creacion, modificación y eliminación de productos de la base de datos realizados de forma manual.
 El manejo de las tareas realizadas quedan listados al completar todas las tareas dejando el informe en consola una vez obtenido un codigo de respuesta "200" por parte del servidor.
 
-[imagen 2]
+![imagen 2](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/2.jpg)
 
 como la imagen lo muestra. se puede apreciar una lista con las tareas realizadas y si se completaron o no.
 La prueba con su nombre (ej: "lectura de productos") y si esta fue realizada satisfactoriamente (true o false)
@@ -59,7 +59,7 @@ La prueba con su nombre (ej: "lectura de productos") y si esta fue realizada sat
 para el manejo de pruebas se utiliza en repositiorio "mocha" y para la comprobación de tareas se utiliza el repositiorio "chai"
 según se puede apreciar en la siguiente imagen. 
 
-[imagen 3]
+![imagen 3](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/3.jpg
 
 - La ejecución de las pruebas mediante "mocha" se realizan también por script de package.json mediante el siguiente comando: 
 ```sh
@@ -71,7 +71,7 @@ En estas pruebas también se verifica que el servidor retorne un estado "200" en
 
 Al terminar las pruebas, la consola escribe un resumen de las tareas realizadas y si estas se concretaron. 
 
-[imagen 4]
+![imagen 4](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/4.jpg)
 
 ## Construido con 🛠️
 

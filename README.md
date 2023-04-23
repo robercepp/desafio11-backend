@@ -49,7 +49,7 @@ query {
 }
 ```
 
-[imagen 1]
+![imagen 1](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/1.jpg)
 
 - Para la consulta de un producto según su Id se ingresa lo siguiente:
 
@@ -63,12 +63,12 @@ query {
   }
 }
 ```
-
 [imagen 2]
 
 nota: el valor de id representa el id del producto a ser mostrado. 
 
 - Para la creación de un producto nuevo se ingresa lo siguiente a modo de ejemplo:
+
 
 ```sh
 mutation {
@@ -86,6 +86,7 @@ mutation {
   editProduct(id: 5, productInput:{nombre: "ernesto", precio:40, thumbnail:"https://ichef.bbci.co.uk/news/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg"})
 }
 ```
+
 [imagen 4]
 este metodo de consulta no retorna el producto en sí, sino un valor booleano. True para una operación exitosa, False para una operación fallida. 
 
@@ -100,6 +101,7 @@ mutation {
 de la misma forma que en la operación de modificación, esta misma retorna un valor booleano. 
 
 - Las operaciones de consulta de usuarios, usuario único mediante id y creación de usuario también estan disponibles.
+
 
 ## Construido con 🛠️
 

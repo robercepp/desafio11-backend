@@ -49,7 +49,7 @@ query {
 }
 ```
 
-![imagen 1](https://github.com/robercepp/desafios-Backend/blob/394d21f85efb4524ce4a7f1904364c0872999f13/images/1.jpg)
+![imagen 1](https://github.com/robercepp/desafios-Backend/blob/main/images/1.jpg)
 
 - Para la consulta de un producto según su Id se ingresa lo siguiente:
 
@@ -63,7 +63,7 @@ query {
   }
 }
 ```
-[imagen 2]
+![imagen 2](https://github.com/robercepp/desafios-Backend/blob/main/images/2.jpg)
 
 nota: el valor de id representa el id del producto a ser mostrado. 
 
@@ -77,7 +77,7 @@ mutation {
   }
 }
 ```
-[imagen 3]
+![imagen 3](https://github.com/robercepp/desafios-Backend/blob/main/images/3.jpg)
 
 - Para la modificación de un producto ya añadido se especifica el id del producto ya existente y luego se ingresan los valores a modificar. 
 
@@ -87,7 +87,7 @@ mutation {
 }
 ```
 
-[imagen 4]
+![imagen 4](https://github.com/robercepp/desafios-Backend/blob/main/images/4.jpg)
 este metodo de consulta no retorna el producto en sí, sino un valor booleano. True para una operación exitosa, False para una operación fallida. 
 
 - Para la eliminación de un producto ya creado se especifica el id del producto a eliminar: 
@@ -97,7 +97,7 @@ mutation {
   deleteProduct(id: 5)
 }
 ```
-[imagen 5]
+![imagen 5](https://github.com/robercepp/desafios-Backend/blob/main/images/5.jpg)
 de la misma forma que en la operación de modificación, esta misma retorna un valor booleano. 
 
 - Las operaciones de consulta de usuarios, usuario único mediante id y creación de usuario también estan disponibles.

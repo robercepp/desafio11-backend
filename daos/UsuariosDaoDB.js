@@ -1,10 +1,21 @@
 const userModel = require("../models/usuario.js");
 const bcript = require("bcryptjs");
 const { connectDB } = require("../utils/config.js");
+const logger = require("../logger.js");
 
 module.exports = class UserHandler {
   constructor(url) {
     this.url = url;
+  }
+
+  async getAll() {
+    try {
+      connectDB();
+      const data = await userModel.find({});
+      return data;
+    } catch (error) {
+      logger.error(error);
+    }
   }
 
   async saveUser(user) {

@@ -2,8 +2,6 @@ const logger = require("../logger.js");
 
 const {productDao, randomProducts} = require ('../repository/Factory.js')
 
-//productos
-
 async function listAll() {
     const resultado = await productDao.listAll();
     return resultado;

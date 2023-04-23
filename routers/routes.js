@@ -7,6 +7,11 @@ const prod = require("../controllers/productos.js");
 const { getAllChats } = require("../controllers/chat.js");
 const passport = require("passport");
 
+//GraphQl
+const {graphqlHTTP} = require('express-graphql')
+const {schema} = require ('../graphql/typeDefs.js')
+const {root} = require ('../controllers/graphql.js')
+
 //Principal (frontend)
 router.get("/login", notAuth, async (req, res) => {
   logger.info(`ruta: '/login' - método: get peticionada`);
@@ -27,7 +32,6 @@ router.get("/", auth, async (req, res) => {
   res.render("main", {
     email: req.user.email,
     titulo: "Pagina principal",
-    lista: prod.listAll(),
     mensajes: getAllChats(),
   });
 });
@@ -71,30 +75,37 @@ router.post("/register", notAuth, async (req, res) => {
   }
 });
 
-//manejo de usuarios (API)
-router.get("/api/usuarios", auth, async (req, res) => {
-  const resultado = await listAllUsers();
-  return res.send(resultado);
-});
+//uso de graphql para manejo de productos y usuarios
+router.use('/graphql', graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: true
+}))
 
-router.post("/api/usuarios", notAuth, async (req, res) => {
-  try {
-    await createUser(req.body);
-  } catch (error) {
-    console.log(error);
-  }
-});
+// //manejo de usuarios (API)
+// router.get("/api/usuarios", auth, async (req, res) => {
+//   const resultado = await listAllUsers();
+//   return res.send(resultado);
+// });
 
-//manejo de productos (API)
-router.get("/api/productos", prod.listAllProducts);
+// router.post("/api/usuarios", notAuth, async (req, res) => {
+//   try {
+//     await createUser(req.body);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
-router.get("/api/productos/:id", prod.listProductById)
+// //manejo de productos (API)
+// router.get("/api/productos", prod.listAllProducts);
 
-router.post("/api/productos", prod.createProduct);
+// router.get("/api/productos/:id", prod.listProductById)
 
-router.put('/api/productos/:id', prod.modifyProduct)
+// router.post("/api/productos", prod.createProduct);
 
-router.delete('/api/productos/:id', prod.deleteProduct)
+// router.put('/api/productos/:id', prod.modifyProduct)
+
+// router.delete('/api/productos/:id', prod.deleteProduct)
 
 //Productos aleatorios
 router.get("/api/randoms", auth, async (req, res) => {

@@ -14,16 +14,18 @@
     {{#if error }}
     <h3 class="error">{{error}}</h3>
     {{/if}}
-    <form id="login-form" class="login" action="/register" method="POST">
+    <form id="login-form" class="login" onsubmit="return addUser()" >
         <h2 class="login-title">Registro de usuario</h2>
         <label for="email">ingrese su email</label>
         <input class="input" type="text" id="email" name="email" placeholder="jose@gmail.com" required>
         <label for="password">ingrese su password</label>
         <input class="input" type="password" id="password" name="password" required>
+        {{!-- <button class="btn" id="btn" type="submit">Registrar</button> --}}
         <button class="btn" id="btn" type="submit">Registrar</button>
     </form>
         <button class="btn" onclick="location.href='/login'" type="button">
          Ir a Login</button>
+         <script src="js/register.js"></script>
 </body>
 
 </html>

@@ -1,10 +1,10 @@
-# Desafío de Clase 42
+# Desafío de Clase 44
 
-El proyecto consta de seguir las pautas especificadas en las rúbricas del desafío a fin de demostrar capacidades y criterio en el testeo de las funcionalidades del servidor.
+El proyecto consta de seguir las pautas especificadas en las rúbricas del desafío a fin de demostrar capacidades y criterio en la implementación de GraphQl.
 
 ## Comenzando 🚀
 
-esta entrega está desarrollada de acuerdo con las pautas del desafío de la clase n°32 del curso de Backend de coderhouse. comisión 40280
+esta entrega está desarrollada de acuerdo con las pautas del desafío de la clase n°44 del curso de Backend de coderhouse. comisión 40280
 url: "https://github.com/robercepp/desafios-Backend"
 
 ### Pre-requisitos 📋
@@ -33,45 +33,73 @@ npm install
 
 - Para esta entrega, se disponen las pruebas de la API rest de la siguiente manera:
 
-- Según las rúbricas de la entrega los test de servidor se enfocan en el apartado de manejo de productos. para los cuales se implementan 2 tipos de pruebas.
+- Según las rúbricas de la entrega los test de servidor se enfocan en el apartado de manejo de productos. para los cuales se implementa grapthql como método de consultas.
 
-- nota: todos los módulos de pruebas se encuentran separados y trabajan de forma independiente, dentro de la carpeta /tests
+las pruebas radican en el manejo de CRUD de productos mediante un único endpoint en "/grapthql"
 
-- Se desarrolla un cliente HTTP en Axios que envía peticiones al servidor y prueba la funcionalidad de la api en el listado, carga, modificación, y eliminación de productos.
+al ingresar a "/grapthql" con graphiql activado accedemos al modo visual para realizar las consultas
+
+- Para consultar todos los productos en la base de datos se ingresan lo siguiente: 
+
+```sh
+query {
+  getProducts {
+    id
+  }
+}
+```
 
 [imagen 1]
 
-- Los test se realizan en un modulo independiente dentro del archivo "/tests/tests.js estos se ejecutan mediante un script:
+- Para la consulta de un producto según su Id se ingresa lo siguiente:
 
 ```sh
-npm run test-manual
+query {
+  getProduct (id: 1) {
+    id
+    nombre
+    precio
+    thumbnail
+  }
+}
 ```
-
-estos prueban la capacidad de respuesta del servidor para manejar peticiones de listado, creacion, modificación y eliminación de productos de la base de datos realizados de forma manual.
-El manejo de las tareas realizadas quedan listados al completar todas las tareas dejando el informe en consola una vez obtenido un codigo de respuesta "200" por parte del servidor.
 
 [imagen 2]
 
-como la imagen lo muestra. se puede apreciar una lista con las tareas realizadas y si se completaron o no.
-La prueba con su nombre (ej: "lectura de productos") y si esta fue realizada satisfactoriamente (true o false)
+nota: el valor de id representa el id del producto a ser mostrado. 
 
-- Para la segunda instancia de pruebas de servidor se utilizan modulos específicos como Supertest que maneja peticiones http al servidor dado (en este caso configurado por defecto en "http://localhost:8080/")
-para el manejo de pruebas se utiliza en repositiorio "mocha" y para la comprobación de tareas se utiliza el repositiorio "chai"
-según se puede apreciar en la siguiente imagen. 
+- Para la creación de un producto nuevo se ingresa lo siguiente a modo de ejemplo:
 
+```sh
+mutation {
+  createProduct(nombre: "pepe", precio: 15, thumbnail: "https://ichef.bbci.co.uk/news/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg") {
+    id
+  }
+}
+```
 [imagen 3]
 
-- La ejecución de las pruebas mediante "mocha" se realizan también por script de package.json mediante el siguiente comando: 
+- Para la modificación de un producto ya añadido se especifica el id del producto ya existente y luego se ingresan los valores a modificar. 
+
 ```sh
-npm run test
+mutation {
+  editProduct(id: 5, productInput:{nombre: "ernesto", precio:40, thumbnail:"https://ichef.bbci.co.uk/news/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg"})
+}
 ```
-Este hace un llamado al repositorio que a su vez ejecuta peticiones de supertest a las terminales asociadas al CRUD de productos y luego las comprueba con "chai" para determinar su correcta implementación. 
-
-En estas pruebas también se verifica que el servidor retorne un estado "200" en todos los casos de lectura, creación, modificación y eliminación de productos. 
-
-Al terminar las pruebas, la consola escribe un resumen de las tareas realizadas y si estas se concretaron. 
-
 [imagen 4]
+este metodo de consulta no retorna el producto en sí, sino un valor booleano. True para una operación exitosa, False para una operación fallida. 
+
+- Para la eliminación de un producto ya creado se especifica el id del producto a eliminar: 
+
+```sh
+mutation {
+  deleteProduct(id: 5)
+}
+```
+[imagen 5]
+de la misma forma que en la operación de modificación, esta misma retorna un valor booleano. 
+
+- Las operaciones de consulta de usuarios, usuario único mediante id y creación de usuario también estan disponibles.
 
 ## Construido con 🛠️
 
@@ -85,7 +113,9 @@ connect-mongo v.4.6.0,
 cookie-parser v.1.4.6,
 express-flash v.0.0.2,
 express-hanbdlebars v.6.0.6,
+express-graphql v.0.12.0,
 express-session v.1.17.3,
+graphql v.15.8.0,
 mongoose v.6.9.1,
 mysql v.2.18.1,
 normalizr v.3.6.2,
@@ -95,12 +125,6 @@ socket.io v.5.1.4,
 sqlite3 v.5.1.4,
 yargs v.17.7.0,
 winston v.3.8.2
-
-dependencias de desarrollo:
-chai v.4.3.7
-dotenv v.16.0.3
-mocha v.10.2.0
-supertest v.6.3.3
 
 ## Autores ✒️
 

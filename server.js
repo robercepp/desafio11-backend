@@ -14,7 +14,7 @@ const flash = require("express-flash");
 const cluster = require("cluster");
 const logger = require("./logger.js");
 const numCPUs = require("os").cpus().length;
-
+const mongoose = require("mongoose");
 //sesiones
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -75,16 +75,18 @@ if (mode == "CLUSTER") {
 
 //servidor
 function iniciarServidor() {
-  const connectServer = server.listen(PORT, () =>
+  mongoose
+  .connect(process.env.MONGOURL, { useNewUrlParser: true } )
+  .then(() => {
     logger.info(
-      `Servidor Express con WebSocket iniciado en modo ${mode} escuchando el puerto ${
-        connectServer.address().port
-      } - Proceso N° ${process.pid} - DAO tipo: ${DAO}`
+      `Conexión con MongoDbAtlas exitosa`
     )
-  );
-  connectServer.on("error", (error) =>
-    logger.error(`Error en servidor ${error}`)
-  );
+    return server.listen(PORT, () => {
+      logger.info(
+        `Servidor Express con WebSocket iniciado en modo ${mode} escuchando el puerto ${PORT} - Proceso N° ${process.pid} - DAO tipo: ${DAO}`
+      )
+    })
+  })
 }
 
 //passport
